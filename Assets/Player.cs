@@ -15,7 +15,10 @@ public class Player : MonoBehaviour
 
     bool isJupming;
     bool isGrounded;
-    bool isDashing;
+    public bool isDashing;
+
+    [SerializeField] float dashTimer;
+    public float timer;
 
     [SerializeField] Transform groundCheck;
     [SerializeField] float groundDistance = 0.4f;
@@ -29,35 +32,48 @@ public class Player : MonoBehaviour
         myrigidbody = GetComponent<Rigidbody>();
         controller = GetComponent<CharacterController>();
         gravity = new Vector3(1f, -9.81f, 1f);
+        timer = dashTimer;
     }
 
     void Update()
     {
         IsPlayerGrounded();
         //controller.Move(moveInput);
-        Debug.DrawRay(transform.position, Vector3.forward * 10f, Color.blue);               
+        Debug.DrawRay(transform.position, Vector3.forward * 10f, Color.blue);
+        if (timer < dashTimer)
+        {
+            timer += Time.deltaTime;
+        }
+        else isDashing = false;
     }
 
 
     private void FixedUpdate()
     {
-        myrigidbody.velocity = moveInput * moveSpeed;
         myrigidbody.AddForce(gravity * gravityScale, ForceMode.Acceleration);
         if (isJupming && isGrounded)
         {
             myrigidbody.velocity = new Vector3(0f, jumpSpeed, 0f);
         }
-        if (isDashing)
+        if (isDashing && timer<dashTimer)
         {
-            myrigidbody.velocity = transform.forward * dashSpeed ;
-        }
+            myrigidbody.velocity = transform.forward * dashSpeed;
+        }        
+        else myrigidbody.velocity = moveInput * moveSpeed;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = new Vector3 (context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
-        if (moveInput != Vector3.zero) transform.forward = moveInput;
-        //Debug.Log("Move input coordinates are: " + moveInput);
+        
+        if (context.performed)
+        {
+            if (moveInput != Vector3.zero && !isDashing)
+            {
+                transform.forward = moveInput;
+            }
+        }
+        
     }
     public void OnJump(InputAction.CallbackContext context) //for using keyboard
     {
@@ -69,9 +85,7 @@ public class Player : MonoBehaviour
         {
             isJupming = false;
         }
-       // myrigidbody.velocity = new Vector3(jumpSpeed, myrigidbody.velocity.y + jumpSpeed, jumpSpeed);
-        //controller.SimpleMove(new Vector3(0f, jumpSpeed, 0f));
-        Debug.Log("Jump key pressed");
+
     }
 
     private void IsPlayerGrounded()
@@ -81,13 +95,10 @@ public class Player : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            isDashing = true;
-        }
-        else
-        {
-            isDashing = false;
-        }
+        if (context.performed) { 
+        isDashing = true;
+        timer = 0f; }
     }
+
+
 }

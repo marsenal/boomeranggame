@@ -582,7 +582,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1574172875}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 8850bf19112d69e43a342950a26ca28d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -677,7 +677,6 @@ GameObject:
   - component: {fileID: 1952891158}
   - component: {fileID: 1952891157}
   - component: {fileID: 1952891156}
-  - component: {fileID: 1952891159}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -812,9 +811,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20357b36f9245ed40924f13871cd00e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 10
   jumpSpeed: 5
-  dashSpeed: 10
+  dashSpeed: 25
+  isDashing: 0
+  dashTimer: 0.1
+  timer: 0
   groundCheck: {fileID: 1574172879}
   groundDistance: 1
   groundMask:
@@ -947,32 +949,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!143 &1952891159
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1952891151}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
