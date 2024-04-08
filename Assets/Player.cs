@@ -62,13 +62,14 @@ public class Player : MonoBehaviour
         else myrigidbody.velocity = moveInput * moveSpeed;
     }
 
+
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = new Vector3 (context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
-        
+               
         if (context.performed)
         {
-            if (moveInput != Vector3.zero && !isDashing)
+            if (moveInput != Vector3.zero /*&& !isDashing*/) //commented this, so turning during dash is possible (if dashing constantly)
             {
                 transform.forward = moveInput;
             }
