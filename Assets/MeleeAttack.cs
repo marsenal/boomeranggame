@@ -32,8 +32,8 @@ public class MeleeAttack : MonoBehaviour
     public void OnFire(InputAction.CallbackContext context)
     {
         if (canAttack)
-        { 
-            Instantiate(hitArea, hitPosition.position, Quaternion.identity);
+        {
+            Instantiate(hitArea, hitPosition, false); //another overload for the function - this way we instantiate it not in world space
             timer = attackCooldown;
         }
     }

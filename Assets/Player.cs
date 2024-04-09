@@ -3,34 +3,51 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 
 public class Player : MonoBehaviour
 {
     Rigidbody myrigidbody;
     Vector3 moveInput;
-    private CharacterController controller;
+
+    [Header("Movement values")]
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpSpeed;
     [SerializeField] float dashSpeed;
 
+    [Header("Other")]
+    [SerializeField] private int lives;
+
     bool isJupming;
     bool isGrounded;
-    public bool isDashing;
 
+    [Header("Dashing parameters")]
+    bool isDashing;
     [SerializeField] float dashTimer;
     public float timer;
 
+    [Header("Ground checking")]
     [SerializeField] Transform groundCheck;
     [SerializeField] float groundDistance = 0.4f;
     [SerializeField] LayerMask groundMask;
 
+    [Header("Gravity")]
     Vector3 gravity;
     [SerializeField] float gravityScale = 1f;
 
+    private void Awake()
+    {
+        InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
+    }
     void Start()
     {
+        // var instance = PlayerInput.Instantiate(input.gameObject, controlScheme: "Keyboard&Mouse", pairWithDevices: new InputDevice[] { Keyboard.current, Mouse.current });
+
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        Debug.Log(playerInput.currentActionMap.name);
+
         myrigidbody = GetComponent<Rigidbody>();
-        controller = GetComponent<CharacterController>();
+
         gravity = new Vector3(1f, -9.81f, 1f);
         timer = dashTimer;
     }
@@ -101,5 +118,13 @@ public class Player : MonoBehaviour
         timer = 0f; }
     }
 
+    public void GetDamaged(int damage)
+    {
+        lives -= damage;
+        if (lives <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 
 }

@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class HitArea : MonoBehaviour
 {
-    [SerializeField] float aliveTime;
-    void Start()
-    {
-        
-    }
+    [SerializeField][Tooltip("This is the time in seconds the attack is 'alive' - duration of attack")] float activeTime;
+    [SerializeField] int damageValue;
 
     void Update()
     {
-        aliveTime -= Time.deltaTime;
-        if (aliveTime < 0)
+        activeTime -= Time.deltaTime;
+        if (activeTime < 0)
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.tag == "Player" && collision.gameObject != this)
+        {
+            collision.GetComponent<Player>().GetDamaged(damageValue);
         }
     }
 }
