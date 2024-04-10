@@ -33,6 +33,7 @@ public class MeleeAttack : MonoBehaviour
     {
         if (canAttack)
         {
+            Debug.Log("Attacking");
             Instantiate(hitArea, hitPosition, false); //another overload for the function - this way we instantiate it not in world space
             timer = attackCooldown;
         }

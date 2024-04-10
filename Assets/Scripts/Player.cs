@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        myrigidbody.AddForce(gravity * gravityScale, ForceMode.Acceleration);
+       // myrigidbody.AddForce(gravity * gravityScale, ForceMode.Acceleration);
         if (isJupming && isGrounded)
         {
             myrigidbody.velocity = new Vector3(0f, jumpSpeed, 0f);

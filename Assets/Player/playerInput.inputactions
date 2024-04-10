@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "48cb3fa3-4f85-4bb0-be13-ea2198f99edb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -260,6 +269,17 @@
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7915671a-39fb-4e65-bc19-4ea9f5f35c8e",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -307,6 +327,15 @@
                     "name": "Dash",
                     "type": "Button",
                     "id": "c9449f8e-d389-40fd-affb-151a1ad76248",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "0308638a-19bf-45b7-b358-a47d47cd968b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -504,7 +533,7 @@
                 {
                     "name": "",
                     "id": "89e1c00c-7194-4e9d-b930-d8a73b70cea7",
-                    "path": "<Keyboard>/shift",
+                    "path": "<Keyboard>/numpad6",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -520,6 +549,17 @@
                     "processors": "",
                     "groups": "Gamepad2",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "95c579ee-7fb3-4380-aa1f-740b618667ec",
+                    "path": "<Keyboard>/numpad5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

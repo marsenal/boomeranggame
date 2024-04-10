@@ -120,3 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeTime: 0.2
   damageValue: 1
+  isDisappearingDamageSource: 1
