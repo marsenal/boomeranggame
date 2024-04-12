@@ -30,7 +30,7 @@ public class Damager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player" && collision.gameObject != GetComponent<RangedAttack>().parentTransform.gameObject)
+        if (collision.gameObject.tag == "Player" && collision.gameObject != GetComponent<RangedAttack>().parentTransform.gameObject && GetComponent<RangedAttack>().IsWeaponDamaging())
         {
             collision.gameObject.GetComponent<Player>().GetDamaged(damageValue);
         }

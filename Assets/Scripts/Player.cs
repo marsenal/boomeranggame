@@ -13,18 +13,21 @@ public class Player : MonoBehaviour
     [Header("Movement values")]
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpSpeed;
-    [SerializeField] float dashSpeed;
 
     [Header("Other")]
     [SerializeField] private int lives;
 
-    bool isJupming;
+    bool isJumping;
     bool isGrounded;
+    bool isThrowing;
 
     [Header("Dashing parameters")]
     bool isDashing;
+    [SerializeField] float dashSpeed;
     [SerializeField] float dashTimer;
+    [SerializeField] float dashCooldown;
     public float timer;
+    public float timer2;
 
     [Header("Ground checking")]
     [SerializeField] Transform groundCheck;
@@ -37,7 +40,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
+        //InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
     }
     void Start()
     {
@@ -50,6 +53,7 @@ public class Player : MonoBehaviour
 
         gravity = new Vector3(1f, -9.81f, 1f);
         timer = dashTimer;
+        timer = dashCooldown;
     }
 
     void Update()
@@ -62,13 +66,17 @@ public class Player : MonoBehaviour
             timer += Time.deltaTime;
         }
         else isDashing = false;
+        if (timer2 < dashCooldown)
+        {
+            timer2 += Time.deltaTime;
+        }
     }
 
 
     private void FixedUpdate()
     {
        // myrigidbody.AddForce(gravity * gravityScale, ForceMode.Acceleration);
-        if (isJupming && isGrounded)
+        if (isJumping && isGrounded)
         {
             myrigidbody.velocity = new Vector3(0f, jumpSpeed, 0f);
         }
@@ -86,7 +94,7 @@ public class Player : MonoBehaviour
                
         if (context.performed)
         {
-            if (moveInput != Vector3.zero /*&& !isDashing*/) //commented this, so turning during dash is possible (if dashing constantly)
+            if (moveInput != Vector3.zero && !isThrowing /*&& !isDashing*/) //commented this, so turning during dash is possible (if dashing constantly)
             {
                 transform.forward = moveInput;
             }
@@ -97,11 +105,11 @@ public class Player : MonoBehaviour
     {
         if (context.performed)
         {
-            isJupming = true;
+            isJumping = true;
         }
         else
         {
-            isJupming = false;
+            isJumping = false;
         }
 
     }
@@ -113,9 +121,11 @@ public class Player : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.performed) { 
+        if (context.performed && timer2 >= dashCooldown) { 
         isDashing = true;
-        timer = 0f; }
+        timer = 0f;
+        timer2 = 0f;
+        }
     }
 
     public void GetDamaged(int damage)
@@ -125,6 +135,15 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isThrowing = true;
+        }
+        else isThrowing = false;
     }
 
 }

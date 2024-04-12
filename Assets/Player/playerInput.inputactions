@@ -274,7 +274,7 @@
                     "name": "",
                     "id": "7915671a-39fb-4e65-bc19-4ea9f5f35c8e",
                     "path": "<Keyboard>/c",
-                    "interactions": "",
+                    "interactions": "Press,Press(behavior=1),Hold",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Shoot",
@@ -559,6 +559,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a97822a6-03a5-4b6c-9850-34a78610b5ca",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad2",
                     "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
