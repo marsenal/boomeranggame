@@ -2,7 +2,7 @@
     "name": "playerInput",
     "maps": [
         {
-            "name": "Player",
+            "name": "Player0",
             "id": "8915d58b-ac66-4e13-a493-e85d45a562f0",
             "actions": [
                 {
@@ -284,7 +284,7 @@
             ]
         },
         {
-            "name": "Player2",
+            "name": "Player1",
             "id": "b65b28de-0f41-4111-b20f-bae58c803503",
             "actions": [
                 {
@@ -556,7 +556,7 @@
                     "name": "",
                     "id": "95c579ee-7fb3-4380-aa1f-740b618667ec",
                     "path": "<Keyboard>/numpad5",
-                    "interactions": "",
+                    "interactions": "Press,Press(behavior=1),Hold",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Shoot",

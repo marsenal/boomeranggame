@@ -80,27 +80,27 @@ public class RangedAttack : MonoBehaviour
 
             //Debug.Log("Velocity is: " + myRigidbody.velocity.normalized);
             deltaDistance = Mathf.Abs((transform.position - startThrowPosition).magnitude);
-           // Debug.Log("Current delta position magnitude: " + deltaDistance + "\n maximum throwing distance: " + maxThrowDistance);
+            // Debug.Log("Current delta position magnitude: " + deltaDistance + "\n maximum throwing distance: " + maxThrowDistance);
 
-            
+
             if (deltaDistance >= maxThrowDistance * throwIntensity)
             {
 
                 //myRigidbody.AddRelativeForce(Vector3.right * throwForce);
                 myRigidbody.AddRelativeForce(Vector3.back * throwForce * 2f * throwIntensity, ForceMode.Force);
 
-                myRigidbody.AddRelativeTorque((new Vector3(3f, 0f, 0f)) * 10000f, ForceMode.Force);
+              //  myRigidbody.AddRelativeTorque((new Vector3(3f, 0f, 0f)) * 10000f, ForceMode.Force);
 
 
                 Debug.Log(transform.up * 100f);
                 myState = WeaponState.ComingBack;
             }
 
-           /* if (myRigidbody.velocity.magnitude <= maxThrowDistance)
-            {
-                myRigidbody.AddRelativeForce(Vector3.back * throwForce * 2f, ForceMode.Impulse); 
-                myState = WeaponState.ComingBack;
-            }*/
+            /* if (myRigidbody.velocity.magnitude <= maxThrowDistance)
+             {
+                 myRigidbody.AddRelativeForce(Vector3.back * throwForce * 2f, ForceMode.Impulse); 
+                 myState = WeaponState.ComingBack;
+             }*/
         }
         else if (myState == WeaponState.ComingBack)
         {
@@ -113,7 +113,7 @@ public class RangedAttack : MonoBehaviour
             {
                 myState = WeaponState.Lost;
             }
-        }
+        } 
         else if (myState == WeaponState.Lost && myRigidbody.velocity.magnitude <= 2f) //this makes it that lost weapon doesn't keep tumbling around
         {
             myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
@@ -138,7 +138,7 @@ public class RangedAttack : MonoBehaviour
                 if (myState == WeaponState.Inactive)
                 {
                     throwIntensity = (float)context.duration;
-                    throwIntensity = Mathf.Clamp(throwIntensity, 0.3f, 1f);
+                    throwIntensity = Mathf.Clamp(throwIntensity, 0.5f, 1f);
                     myState = WeaponState.Thrown;
                     myRigidbody.isKinematic = false;
 
@@ -161,7 +161,7 @@ public class RangedAttack : MonoBehaviour
                 if (myState == WeaponState.Inactive)
                 {
                     throwIntensity = (float)context.duration;
-                    throwIntensity = Mathf.Clamp(throwIntensity, 0.3f, 1f);
+                    throwIntensity = Mathf.Clamp(throwIntensity, 0.5f, 1f);
                     myState = WeaponState.Thrown;
                     myRigidbody.isKinematic = false;
 
@@ -195,7 +195,7 @@ public class RangedAttack : MonoBehaviour
 
     private void CheckForPlayer()
     {
-       if( Physics.CheckSphere(transform.position, checkRadius, LayerMask.GetMask("Player")) && (myState == WeaponState.Lost || myState == WeaponState.ComingBack))
+       if( Physics.CheckSphere(transform.position, checkRadius, LayerMask.GetMask("Player")) && (myState == WeaponState.Lost || myState == WeaponState.ComingBack || myState == WeaponState.Thrown))
         {
            foreach (Collider collider in Physics.OverlapSphere(transform.position, checkRadius, LayerMask.GetMask("Player")) )
             {
@@ -208,14 +208,16 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-   /* private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Wall")
-        {
-            myState = WeaponState.Lost;
-            myRigidbody.constraints = RigidbodyConstraints.None;
-        }
-    }*/
+            if (Mathf.Abs(myRigidbody.velocity.magnitude) <= 2f)
+            {
+                myState = WeaponState.Lost;
+                myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            }
+
+    }
 
     public bool IsWeaponDamaging()
     {

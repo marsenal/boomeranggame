@@ -53,6 +53,7 @@ MonoBehaviour:
   moveSpeed: 10
   jumpSpeed: 5
   lives: 1
+  isThrowing: 0
   dashSpeed: 25
   dashTimer: 0.1
   dashCooldown: 0.3
@@ -215,7 +216,7 @@ MonoBehaviour:
     m_ActionName: Player/Dash[/Keyboard/shift]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 349646591974104428}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -243,7 +244,7 @@ MonoBehaviour:
     m_ActionName: Player2/Jump[/Keyboard/space]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 349646591974104428}
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnDash
         m_Mode: 0
@@ -271,15 +272,51 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 349646591974104428}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnShoot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 48cb3fa3-4f85-4bb0-be13-ea2198f99edb
     m_ActionName: Player/Shoot[/Keyboard/c]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4779364904532789972}
+        m_TargetAssemblyTypeName: RangedAttack, Assembly-CSharp
+        m_MethodName: ThrowWeapon
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 349646591974104428}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: OnShoot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 0308638a-19bf-45b7-b358-a47d47cd968b
     m_ActionName: Player2/Shoot[/Keyboard/numpad5]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Player0
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!136 &8618024946241841904
@@ -575,7 +612,7 @@ Rigidbody:
   m_GameObject: {fileID: 9116147822860600117}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 0.5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -627,7 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwForce: 1000
-  maxThrowDistance: 10
+  maxThrowDistance: 20
   checkRadius: 0.1
   hand: {fileID: 8056396147656573179}
   parentTransform: {fileID: 6563684297034464429}

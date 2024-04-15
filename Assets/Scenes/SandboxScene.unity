@@ -446,11 +446,11 @@ MonoBehaviour:
       - m_Target: {fileID: 488931769}
         m_TargetAssemblyTypeName: ControlAssigner, Assembly-CSharp
         m_MethodName: SpawnPlayer
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -536,7 +536,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActionAsset: {fileID: -944628639613478452, guid: 0bde1f1360878144db9fc033eb5b7d40, type: 3}
   playerPrefab: {fileID: 349646591974104428, guid: 8d8a7d8938e31ea4a963f08757d360d5, type: 3}
-  spawnPoint: {fileID: 1474230744}
+  spawnPoint:
+  - {fileID: 1474230744}
+  - {fileID: 893371427}
 --- !u!4 &488931770
 Transform:
   m_ObjectHideFlags: 0
@@ -855,7 +857,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 635223554}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 488931769}
+        m_TargetAssemblyTypeName: ControlAssigner, Assembly-CSharp
+        m_MethodName: SpawnPlayer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 198771862}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: HideCanvas
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &635223554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1330,6 +1356,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -84.814, z: 0}
+--- !u!1 &893371426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 893371427}
+  m_Layer: 0
+  m_Name: SpawnPoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &893371427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893371426}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.69, y: 0, z: -11.98}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &942058507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,7 +1822,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 59.44763
+  field of view: 58.67672
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2632,4 +2689,5 @@ SceneRoots:
   - {fileID: 763549261}
   - {fileID: 488931770}
   - {fileID: 1474230744}
+  - {fileID: 893371427}
   - {fileID: 198771863}

@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     bool isJumping;
     bool isGrounded;
-    bool isThrowing;
+    public bool isThrowing;
 
     [Header("Dashing parameters")]
     bool isDashing;
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        //InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
+        InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
     }
     void Start()
     {
@@ -80,11 +80,12 @@ public class Player : MonoBehaviour
         {
             myrigidbody.velocity = new Vector3(0f, jumpSpeed, 0f);
         }
-        if (isDashing && timer<dashTimer)
+        if (isDashing && timer < dashTimer)
         {
             myrigidbody.velocity = transform.forward * dashSpeed;
-        }        
-        else myrigidbody.velocity = moveInput * moveSpeed;
+        }
+        else if (!isThrowing) myrigidbody.velocity = moveInput * moveSpeed;
+        else myrigidbody.velocity = Vector3.zero;
     }
 
 
@@ -94,7 +95,7 @@ public class Player : MonoBehaviour
                
         if (context.performed)
         {
-            if (moveInput != Vector3.zero && !isThrowing /*&& !isDashing*/) //commented this, so turning during dash is possible (if dashing constantly)
+            if (moveInput != Vector3.zero /*&& !isDashing*/) //commented this, so turning during dash is possible (if dashing constantly)
             {
                 transform.forward = moveInput;
             }
@@ -139,11 +140,10 @@ public class Player : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            isThrowing = true;
-        }
-        else isThrowing = false;
+ 
+        if (GetComponentInChildren<RangedAttack>()) isThrowing = true;
+
+        if (context.canceled) isThrowing = false;
     }
 
 }

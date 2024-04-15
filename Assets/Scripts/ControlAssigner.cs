@@ -7,7 +7,9 @@ public class ControlAssigner : MonoBehaviour
 {
     [SerializeField] InputActionAsset inputActionAsset;
     [SerializeField] Player playerPrefab;
-    [SerializeField] Transform spawnPoint;
+    [SerializeField] Transform[] spawnPoint;
+
+    
 
     void Start()
     {
@@ -20,8 +22,13 @@ public class ControlAssigner : MonoBehaviour
         
     }
 
-    public void SpawnPlayer()
+    public void SpawnPlayer(int numberOfPlayers)
     {
-        Instantiate(playerPrefab.gameObject, spawnPoint.position, Quaternion.identity);
+        for (int i = 0; i < numberOfPlayers; i++) {
+           Player newPlayer =  Instantiate(playerPrefab, spawnPoint[i].position, Quaternion.identity);
+            newPlayer.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player"+i.ToString());
+           
+           Debug.Log( "Current enabled action map name = " + newPlayer.GetComponent<PlayerInput>().currentActionMap.name);
+        }
     }
 }
