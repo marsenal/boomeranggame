@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     [Header("Other")]
     [SerializeField] private int lives;
+    [SerializeField] GameObject throwDirectionIndicator;
 
     bool isJumping;
     bool isGrounded;
@@ -45,6 +46,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         // var instance = PlayerInput.Instantiate(input.gameObject, controlScheme: "Keyboard&Mouse", pairWithDevices: new InputDevice[] { Keyboard.current, Mouse.current });
+
+        throwDirectionIndicator.SetActive(false);
 
         PlayerInput playerInput = GetComponent<PlayerInput>();
         Debug.Log(playerInput.currentActionMap.name);
@@ -140,10 +143,17 @@ public class Player : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
- 
-        if (GetComponentInChildren<RangedAttack>()) isThrowing = true;
 
-        if (context.canceled) isThrowing = false;
+        if (GetComponentInChildren<RangedAttack>())
+        {
+            isThrowing = true;
+            throwDirectionIndicator.SetActive(true);
+        }
+
+        if (context.canceled)
+        {
+            isThrowing = false;
+            throwDirectionIndicator.SetActive(false);
+        }
     }
-
 }
