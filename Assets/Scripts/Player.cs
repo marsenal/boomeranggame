@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [Header("Other")]
     [SerializeField] private int lives;
     [SerializeField] GameObject throwDirectionIndicator;
+    Animator myAnimator;
 
     bool isJumping;
     bool isGrounded;
@@ -47,11 +48,13 @@ public class Player : MonoBehaviour
     {
         // var instance = PlayerInput.Instantiate(input.gameObject, controlScheme: "Keyboard&Mouse", pairWithDevices: new InputDevice[] { Keyboard.current, Mouse.current });
 
+
         throwDirectionIndicator.SetActive(false);
 
         PlayerInput playerInput = GetComponent<PlayerInput>();
         Debug.Log(playerInput.currentActionMap.name);
 
+        myAnimator = GetComponentInChildren<Animator>();
         myrigidbody = GetComponent<Rigidbody>();
 
         gravity = new Vector3(1f, -9.81f, 1f);
@@ -78,7 +81,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-       // myrigidbody.AddForce(gravity * gravityScale, ForceMode.Acceleration);
         if (isJumping && isGrounded)
         {
             myrigidbody.velocity = new Vector3(0f, jumpSpeed, 0f);
@@ -87,8 +89,14 @@ public class Player : MonoBehaviour
         {
             myrigidbody.velocity = transform.forward * dashSpeed;
         }
-        else if (!isThrowing) myrigidbody.velocity = moveInput * moveSpeed;
-        else myrigidbody.velocity = Vector3.zero;
+        else if (!isThrowing)
+        {
+            myrigidbody.velocity = moveInput * moveSpeed;
+            myAnimator.SetBool("isMoving", true);
+        }
+        else { myrigidbody.velocity = Vector3.zero;
+            myAnimator.SetBool("isMoving", false);
+        }
     }
 
 
@@ -155,5 +163,10 @@ public class Player : MonoBehaviour
             isThrowing = false;
             throwDirectionIndicator.SetActive(false);
         }
+    }
+
+    private void Dying()
+    {
+
     }
 }

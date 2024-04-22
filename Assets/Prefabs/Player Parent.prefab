@@ -411,6 +411,46 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0308638a-19bf-45b7-b358-a47d47cd968b
     m_ActionName: Player2/Shoot[/Keyboard/numpad5]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 69d9c9a6-e68b-4a1e-8183-456ece68a8c0
+    m_ActionName: UI1/Navigate[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b5ad5eff-8b59-40ab-8d68-e609bc390e35
+    m_ActionName: UI1/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3ace2ebb-9aae-4630-b5ff-036784054334
+    m_ActionName: UI1/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8cd175e1-b6de-46fd-8e97-4e009c49fd3c
+    m_ActionName: UI1/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7cc3158e-9074-413c-a625-f706d9c56368
+    m_ActionName: UI1/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b7bfcd1c-7cd5-4007-9c09-078eb0a20265
+    m_ActionName: UI1/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: df6e2607-660c-452d-9108-b60b875eca70
+    m_ActionName: UI1/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0dfdf82f-9acb-4add-9185-cddf368f2461
+    m_ActionName: UI1/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 53a38a5a-5dbd-4c65-8ab2-e21e5f48769e
+    m_ActionName: UI1/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 777ddf82-2c18-45a8-a93b-fa934e3ca597
+    m_ActionName: UI1/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player0
@@ -540,6 +580,7 @@ GameObject:
   - component: {fileID: 8244471549956869317}
   - component: {fileID: 5598859608260743066}
   - component: {fileID: 8221920529964061643}
+  - component: {fileID: 4457197834242262289}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -613,6 +654,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &4457197834242262289
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7166405044167792316}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 59927d962d94e4b43be2941ead8386e0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &9116147822860600117
 GameObject:
   m_ObjectHideFlags: 0

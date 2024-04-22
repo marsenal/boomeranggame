@@ -1,17 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    void Start()
+  /*  void Start()
     {
-        
-    }
+        int numberOfInstances = FindObjectsOfType<GameManager>().Length;
+        if (numberOfInstances > 1)
+        {
+            Destroy(gameObject);
+        }
+        else DontDestroyOnLoad(gameObject);
+    }*/
 
-    void Update()
+    public void StartGame()
     {
-        
+        SceneManager.LoadScene(1);
     }
 
     public void HideCanvas()
