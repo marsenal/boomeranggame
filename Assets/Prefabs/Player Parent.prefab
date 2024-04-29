@@ -829,6 +829,7 @@ MonoBehaviour:
   throwStrength: 0
   baseStallDuration: 0.1
   currentStalling: 0
+  maxPullBackTime: 2
   wallsHit: 0
   checkRadius: 1
   hand: {fileID: 8056396147656573179}

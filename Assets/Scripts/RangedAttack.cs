@@ -14,6 +14,9 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] float baseStallDuration;
     public float currentStalling;
 
+    [SerializeField] float maxPullBackTime;
+    private float pullbackCounter = 0f;
+
     public int wallsHit;
     bool canBounceOffWall;
 
@@ -103,12 +106,20 @@ public class RangedAttack : MonoBehaviour
 
             transform.forward = myRigidbody.velocity.normalized;
 
+            pullbackCounter += Time.deltaTime;
+
+            if (pullbackCounter > maxPullBackTime)
+            {
+                myState = WeaponState.Lost;
+                pullbackCounter = 0f;
+            }
+
             // Debug.Log("Velocity vector: " + myRigidbody.velocity);
         }
         else if (myState == WeaponState.Lost) //this makes it that lost weapon doesn't keep tumbling around
         {
             transform.forward = myRigidbody.velocity.normalized;
-            myRigidbody.AddRelativeForce(-transform.forward * 0.2f, ForceMode.VelocityChange);
+            myRigidbody.AddRelativeForce(-transform.forward * 2f, ForceMode.VelocityChange);
             canBounceOffWall = false;
 
             if (myRigidbody.velocity.magnitude <= 2f) { 
