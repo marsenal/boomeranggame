@@ -88,14 +88,18 @@ public class Player : MonoBehaviour
         if (isDashing && timer < dashTimer)
         {
             myrigidbody.velocity = transform.forward * dashSpeed;
+            myAnimator.SetBool("isDashing", true);
+            myAnimator.SetBool("isMoving", false);
         }
         else if (!isThrowing)
         {
             myrigidbody.velocity = moveInput * moveSpeed;
             myAnimator.SetBool("isMoving", true);
+            myAnimator.SetBool("isDashing", false);
         }
         else { myrigidbody.velocity = Vector3.zero;
             myAnimator.SetBool("isMoving", false);
+            myAnimator.SetBool("isDashing", false);
         }
     }
 

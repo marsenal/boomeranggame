@@ -14,6 +14,9 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] float baseStallDuration;
     public float currentStalling;
 
+    public int wallsHit;
+    bool canBounceOffWall;
+
     [SerializeField] float checkRadius;
     [SerializeField] Transform hand;
     Vector3 throwDirection;
@@ -36,7 +39,7 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] WeaponState myState;
     void Start()
     {
-        Physics.IgnoreCollision(GetComponent<SphereCollider>(), parentTransform.GetComponent<CapsuleCollider>());
+        Physics.IgnoreCollision(GetComponent<BoxCollider>(), parentTransform.GetComponent<CapsuleCollider>());
         startTransform = transform;
 
         myRigidbody = GetComponent<Rigidbody>();
@@ -50,13 +53,11 @@ public class RangedAttack : MonoBehaviour
     {
         CheckForPlayer();
 
-        Debug.Log("Duration of weapon throw:" + throwStrength);
+       // Debug.Log("Duration of weapon throw:" + throwStrength);
     }
 
     private void FixedUpdate()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y,0f,2f), transform.position.z);
-
         StateMachine();
     }
 
@@ -92,7 +93,7 @@ public class RangedAttack : MonoBehaviour
         }
         else if (myState == WeaponState.ComingBack)
         {
-            myRigidbody.constraints = RigidbodyConstraints.None;
+            myRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
 
             Debug.Log("Parent transform position is: " + parentTransform.position);
 
@@ -100,17 +101,22 @@ public class RangedAttack : MonoBehaviour
 
             myRigidbody.AddForce(comingBackVector * throwForce * 0.8f * throwStrength, ForceMode.VelocityChange);
 
-            myRigidbody.constraints = RigidbodyConstraints.None;
             transform.forward = myRigidbody.velocity.normalized;
 
-            Debug.Log("Velocity vector: " + myRigidbody.velocity);
-        } 
-        else if (myState == WeaponState.Lost && myRigidbody.velocity.magnitude <= 2f) //this makes it that lost weapon doesn't keep tumbling around
+            // Debug.Log("Velocity vector: " + myRigidbody.velocity);
+        }
+        else if (myState == WeaponState.Lost) //this makes it that lost weapon doesn't keep tumbling around
         {
-            myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
+            transform.forward = myRigidbody.velocity.normalized;
+            myRigidbody.AddRelativeForce(-transform.forward * 0.2f, ForceMode.VelocityChange);
+            canBounceOffWall = false;
+
+            if (myRigidbody.velocity.magnitude <= 2f) { 
+            myRigidbody.constraints = RigidbodyConstraints.FreezeAll; }
         }
         else if (myState == WeaponState.Stalling)
         {
+            transform.forward = myRigidbody.velocity.normalized;
             currentStalling += Time.deltaTime;
             Vector3 comingBackVector = (parentTransform.position - transform.position).normalized;
 
@@ -127,12 +133,14 @@ public class RangedAttack : MonoBehaviour
         {
             if (context.started)
             {
-                Debug.Log("Duration of weapon throw:" + context.duration);
+                //Debug.Log("Duration of weapon throw:" + context.duration);
             }
             if (context.canceled)
             {
                 if (myState == WeaponState.Inactive)
                 {
+                    canBounceOffWall = true;
+
                     deltaDistance = 0f;
 
                     throwStrength = (float)context.duration;
@@ -158,6 +166,8 @@ public class RangedAttack : MonoBehaviour
             {
                 if (myState == WeaponState.Inactive)
                 {
+                    canBounceOffWall = true;
+
                     deltaDistance = 0f;
 
                     throwStrength = (float)context.duration;
@@ -180,6 +190,14 @@ public class RangedAttack : MonoBehaviour
                 }
             }
         }
+        if (context.interaction is HoldInteraction && myState == WeaponState.Lost) //this doesn't work - holding throw button when weap is lost pulls it back
+        {
+            if (context.canceled)
+            {
+                Debug.Log("Weapon is lost, pulling it back");
+                myState = WeaponState.ComingBack;
+            }
+        }
 
     }
 
@@ -187,12 +205,18 @@ public class RangedAttack : MonoBehaviour
     {
         transform.position = hand.position;
         transform.parent = parentTransform;
+
+        transform.forward = parentTransform.forward;
         
         myRigidbody.isKinematic = true;
         myRigidbody.constraints = RigidbodyConstraints.FreezeAll;
         myState = WeaponState.Inactive;
 
         deltaDistance = 0f;
+
+        throwStrength = 0f;
+
+        wallsHit = 0;
     }
 
     private void CheckForPlayer()
@@ -214,9 +238,14 @@ public class RangedAttack : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Wall")
+        if (collision.gameObject.tag == "Wall" && canBounceOffWall && (myState == WeaponState.Thrown || myState == WeaponState.Stalling))
         {
-            myRigidbody.AddForce(myRigidbody.velocity * throwForce * 0.01f, ForceMode.VelocityChange);
+            myRigidbody.AddForce(myRigidbody.velocity * throwForce * 0.005f, ForceMode.VelocityChange);
+            wallsHit++;
+            if (wallsHit>2)
+            {
+                LoseWeapon(collision.transform);
+            }
         }
 
     }
@@ -227,15 +256,22 @@ public class RangedAttack : MonoBehaviour
         {
             if (myState != WeaponState.Inactive)
             {
-                LoseWeapon();
+                LoseWeapon(other.transform);
             }
         }
     }
 
-    private void LoseWeapon()
+    private void LoseWeapon(Transform originOfHit)
     {
-        myRigidbody.AddForce(-myRigidbody.velocity * throwForce * 0.01f, ForceMode.VelocityChange);
-        myRigidbody.constraints = RigidbodyConstraints.None;
+        Vector3 deflectionVector = transform.position - originOfHit.position;
+        Debug.Log("Vector of deflection is: " + (transform.position - originOfHit.position));
+        myRigidbody.AddRelativeForce(-transform.forward * 0.2f, ForceMode.VelocityChange);
+        myRigidbody.AddForce( deflectionVector * throwForce * 0.2f, ForceMode.VelocityChange);
+        // myRigidbody.constraints = RigidbodyConstraints.None;
+        myRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
+        myRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
+        myRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
+
         myState = WeaponState.Lost;
     }
 
@@ -251,8 +287,20 @@ public class RangedAttack : MonoBehaviour
                 return false;
             case WeaponState.Lost:
                 return false;
+            case WeaponState.Stalling:
+                return true;
             default:
                 return false;
+        }
+    }
+
+    private void LimitArea()
+    {
+
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, 0f, 2f), transform.position.z);
+        if (transform.position.y < 0f)
+        {
+            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         }
     }
 

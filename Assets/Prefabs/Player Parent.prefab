@@ -690,6 +690,7 @@ GameObject:
   - component: {fileID: 3378410028650417343}
   - component: {fileID: 4779364904532789972}
   - component: {fileID: 2710973793196365148}
+  - component: {fileID: 6380193631463201608}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Weapon
@@ -806,7 +807,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -822,13 +823,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 524f2c81932e1ea4db0a597caf9eb05c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 50
+  maxSpeed: 40
   throwForce: 50
   maxThrowDuration: 0.5
   throwStrength: 0
   baseStallDuration: 0.1
   currentStalling: 0
-  checkRadius: 0.5
+  wallsHit: 0
+  checkRadius: 1
   hand: {fileID: 8056396147656573179}
   deltaDistance: 0
   parentTransform: {fileID: 6563684297034464429}
@@ -849,3 +851,24 @@ MonoBehaviour:
   activeTime: 0
   damageValue: 1
   isDisappearingDamageSource: 0
+--- !u!65 &6380193631463201608
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9116147822860600117}
+  m_Material: {fileID: 13400000, guid: a0ca627eb1944e14dbbfa529e9df5ec7, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
