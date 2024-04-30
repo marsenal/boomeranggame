@@ -102,7 +102,7 @@ public class RangedAttack : MonoBehaviour
 
             Vector3 comingBackVector = (parentTransform.position - transform.position).normalized;
 
-            myRigidbody.AddForce(comingBackVector * throwForce * 0.8f * throwStrength, ForceMode.VelocityChange);
+            myRigidbody.AddForce(comingBackVector * throwForce * 0.5f * throwStrength, ForceMode.VelocityChange);
 
             transform.forward = myRigidbody.velocity.normalized;
 
@@ -118,6 +118,8 @@ public class RangedAttack : MonoBehaviour
         }
         else if (myState == WeaponState.Lost) //this makes it that lost weapon doesn't keep tumbling around
         {
+            IgnoreCollisionWithPlayers(true);
+
             transform.forward = myRigidbody.velocity.normalized;
             myRigidbody.AddRelativeForce(-transform.forward * 2f, ForceMode.VelocityChange);
             canBounceOffWall = false;
@@ -140,7 +142,7 @@ public class RangedAttack : MonoBehaviour
 
     public void ThrowWeapon(InputAction.CallbackContext context)
     {
-        if (context.interaction is PressInteraction)
+        //if (context.interaction is PressInteraction)
         {
             if (context.started)
             {
@@ -173,8 +175,9 @@ public class RangedAttack : MonoBehaviour
                     transform.forward = myRigidbody.velocity.normalized;
                 }
             }
-            else if (context.interaction is HoldInteraction)
+        /*    else if (context.interaction is HoldInteraction)
             {
+                Debug.Log("Interaction is HOLD interaction");
                 if (myState == WeaponState.Inactive)
                 {
                     canBounceOffWall = true;
@@ -199,21 +202,31 @@ public class RangedAttack : MonoBehaviour
                     Debug.Log(myRigidbody.velocity);
                     transform.forward = myRigidbody.velocity.normalized;
                 }
-            }
+            }*/
         }
-        if (context.interaction is HoldInteraction && myState == WeaponState.Lost) //this doesn't work - holding throw button when weap is lost pulls it back
+        if (myState == WeaponState.Lost) //this doesn't work - holding throw button when weap is lost pulls it back
         {
-            if (context.canceled)
+            if (context.interaction is HoldInteraction && context.performed)
             {
                 Debug.Log("Weapon is lost, pulling it back");
                 myState = WeaponState.ComingBack;
             }
+            
         }
-
+        else if ( myState == WeaponState.ComingBack)
+        {
+            if(context.interaction is HoldInteraction && context.canceled)
+            {
+                Debug.Log("Weapon pullback canceled");
+                myState = WeaponState.Lost;
+            }
+        }
     }
 
     private void PickUpWeapon()
     {
+        IgnoreCollisionWithPlayers(false);
+
         transform.position = hand.position;
         transform.parent = parentTransform;
 
@@ -244,6 +257,17 @@ public class RangedAttack : MonoBehaviour
                 }
             }
 
+        }
+    }
+
+    private void IgnoreCollisionWithPlayers(bool value)
+    {
+
+        Player[] colliders = FindObjectsByType<Player>(FindObjectsSortMode.InstanceID);
+
+        foreach (Player collider in colliders)
+        {
+            Physics.IgnoreCollision(GetComponent<BoxCollider>(), collider.GetComponent<CapsuleCollider>(), value);
         }
     }
 

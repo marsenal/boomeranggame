@@ -155,10 +155,10 @@ public class Player : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext context)
     {
+        isThrowing = true;
 
         if (GetComponentInChildren<RangedAttack>())
         {
-            isThrowing = true;
             throwDirectionIndicator.SetActive(true);
         }
 

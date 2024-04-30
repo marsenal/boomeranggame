@@ -274,7 +274,7 @@
                     "name": "",
                     "id": "7915671a-39fb-4e65-bc19-4ea9f5f35c8e",
                     "path": "<Keyboard>/c",
-                    "interactions": "Press,Press(behavior=1),Hold",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Shoot",
