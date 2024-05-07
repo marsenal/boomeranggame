@@ -46,9 +46,6 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        // var instance = PlayerInput.Instantiate(input.gameObject, controlScheme: "Keyboard&Mouse", pairWithDevices: new InputDevice[] { Keyboard.current, Mouse.current });
-
-
         throwDirectionIndicator.SetActive(false);
 
         PlayerInput playerInput = GetComponent<PlayerInput>();
@@ -65,7 +62,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         IsPlayerGrounded();
-        //controller.Move(moveInput);
+
         Debug.DrawRay(transform.position, Vector3.forward * 10f, Color.blue);
         if (timer < dashTimer)
         {
@@ -159,18 +156,19 @@ public class Player : MonoBehaviour
 
         if (GetComponentInChildren<RangedAttack>())
         {
-            throwDirectionIndicator.SetActive(true);
+            ChangeIndicatorStatus(true);
         }
 
         if (context.canceled)
         {
             isThrowing = false;
-            throwDirectionIndicator.SetActive(false);
+            ChangeIndicatorStatus(false);
         }
     }
 
-    private void Dying()
+    public void ChangeIndicatorStatus(bool value)
     {
-
+        throwDirectionIndicator.SetActive(value);
+        isThrowing = value;
     }
 }

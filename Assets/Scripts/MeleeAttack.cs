@@ -10,22 +10,31 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField] Transform hitPosition;
     float timer;
     public bool canAttack;
-    void Start()
-    {
+    public bool isWeaponInHand;
 
+    private void Start()
+    {
+        isWeaponInHand = true;
     }
 
     void Update()
     {
-        if (timer > 0)
+        if (isWeaponInHand)
         {
-            timer -= Time.deltaTime;
-            canAttack = false;
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                canAttack = false;
+            }
+            else
+            {
+                canAttack = true;
+                timer = 0f;
+            }
         }
         else
         {
-            canAttack = true;
-            timer = 0f;
+            canAttack = false;
         }
     }
 
@@ -33,9 +42,13 @@ public class MeleeAttack : MonoBehaviour
     {
         if (canAttack)
         {
-            Debug.Log("Attacking");
             Instantiate(hitArea, hitPosition, false); //another overload for the function - this way we instantiate it not in world space
             timer = attackCooldown;
         }
+    }
+
+    public void EnableAttack(bool value)
+    {
+        isWeaponInHand = value;
     }
 }

@@ -166,6 +166,7 @@ MonoBehaviour:
   attackCooldown: 0.5
   hitPosition: {fileID: 8225006242136384958}
   canAttack: 0
+  isWeaponInHand: 0
 --- !u!114 &7603072393778256878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +298,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4779364904532789972}
+        m_TargetAssemblyTypeName: RangedAttack, Assembly-CSharp
+        m_MethodName: CancelWeaponCharge
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 083952e9-6a70-42a5-a3c3-500f49dc8391
     m_ActionName: Player/Dash[/Keyboard/shift]
   - m_PersistentCalls:
@@ -345,6 +358,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Player, Assembly-CSharp
         m_MethodName: OnDash
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4779364904532789972}
+        m_TargetAssemblyTypeName: RangedAttack, Assembly-CSharp
+        m_MethodName: CancelWeaponCharge
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -835,7 +860,7 @@ MonoBehaviour:
   hand: {fileID: 8056396147656573179}
   deltaDistance: 0
   parentTransform: {fileID: 6563684297034464429}
-  isWeaponThrown: 0
+  canChargeUp: 0
   myState: 0
 --- !u!114 &2710973793196365148
 MonoBehaviour:
@@ -871,5 +896,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}

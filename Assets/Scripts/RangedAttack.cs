@@ -10,7 +10,7 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] float maxSpeed;
     [SerializeField] float throwForce;
     [SerializeField] float maxThrowDuration;
-    public float throwStrength = 0f;
+    public float throwStrength = 0f; //charging up weapon increases this. max is 1
     [SerializeField] float baseStallDuration;
     public float currentStalling;
 
@@ -23,12 +23,11 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] float checkRadius;
     [SerializeField] Transform hand;
     Vector3 throwDirection;
-    Transform startTransform;
-    Vector3 startThrowPosition;
+
     public float deltaDistance;
     [SerializeField] public Transform parentTransform;
 
-    public bool isWeaponThrown;
+    public bool canChargeUp; //keeps track of wether the weap is on player
 
     enum WeaponState
     {
@@ -42,8 +41,7 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] WeaponState myState;
     void Start()
     {
-        Physics.IgnoreCollision(GetComponent<BoxCollider>(), parentTransform.GetComponent<CapsuleCollider>());
-        startTransform = transform;
+        //Physics.IgnoreCollision(GetComponent<BoxCollider>(), parentTransform.GetComponent<CapsuleCollider>()); //is this needed here?
 
         myRigidbody = GetComponent<Rigidbody>();
         myRigidbody.isKinematic = true;
@@ -55,8 +53,6 @@ public class RangedAttack : MonoBehaviour
     void Update()
     {
         CheckForPlayer();
-
-       // Debug.Log("Duration of weapon throw:" + throwStrength);
     }
 
     private void FixedUpdate()
@@ -83,6 +79,7 @@ public class RangedAttack : MonoBehaviour
     {
         if (myState == WeaponState.Thrown)
         {
+            CancelWeaponCharge();
             currentStalling = 0f;
 
             transform.forward = myRigidbody.velocity.normalized;
@@ -96,9 +93,9 @@ public class RangedAttack : MonoBehaviour
         }
         else if (myState == WeaponState.ComingBack)
         {
+            IgnoreCollisionWithPlayers(false);
+            CancelWeaponCharge();
             myRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
-
-            Debug.Log("Parent transform position is: " + parentTransform.position);
 
             Vector3 comingBackVector = (parentTransform.position - transform.position).normalized;
 
@@ -113,8 +110,6 @@ public class RangedAttack : MonoBehaviour
                 myState = WeaponState.Lost;
                 pullbackCounter = 0f;
             }
-
-            // Debug.Log("Velocity vector: " + myRigidbody.velocity);
         }
         else if (myState == WeaponState.Lost) //this makes it that lost weapon doesn't keep tumbling around
         {
@@ -129,9 +124,9 @@ public class RangedAttack : MonoBehaviour
         }
         else if (myState == WeaponState.Stalling)
         {
+            CancelWeaponCharge();
             transform.forward = myRigidbody.velocity.normalized;
             currentStalling += Time.deltaTime;
-            Vector3 comingBackVector = (parentTransform.position - transform.position).normalized;
 
             if (currentStalling >= baseStallDuration / throwStrength)
             {
@@ -142,16 +137,19 @@ public class RangedAttack : MonoBehaviour
 
     public void ThrowWeapon(InputAction.CallbackContext context)
     {
-        //if (context.interaction is PressInteraction)
         {
-            if (context.started)
+            if (context.started && myState == WeaponState.Inactive)
             {
-                //Debug.Log("Duration of weapon throw:" + context.duration);
+                canChargeUp = true;
             }
-            if (context.canceled)
+            if (context.canceled && canChargeUp)
             {
                 if (myState == WeaponState.Inactive)
                 {
+                    parentTransform.GetComponent<MeleeAttack>().EnableAttack(false);
+
+                    canChargeUp = false;
+
                     canBounceOffWall = true;
 
                     deltaDistance = 0f;
@@ -161,7 +159,6 @@ public class RangedAttack : MonoBehaviour
                     myState = WeaponState.Thrown;
                     myRigidbody.isKinematic = false;
 
-                    startThrowPosition = parentTransform.position;
                     throwDirection = GetComponentInParent<Player>().transform.forward;
 
                     myRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
@@ -171,60 +168,30 @@ public class RangedAttack : MonoBehaviour
                     transform.parent = null;
                     myRigidbody.AddForce(throwForce * throwDirection * throwStrength, ForceMode.VelocityChange);
 
-                    Debug.Log(myRigidbody.velocity);
                     transform.forward = myRigidbody.velocity.normalized;
                 }
             }
-        /*    else if (context.interaction is HoldInteraction)
-            {
-                Debug.Log("Interaction is HOLD interaction");
-                if (myState == WeaponState.Inactive)
-                {
-                    canBounceOffWall = true;
-
-                    deltaDistance = 0f;
-
-                    throwStrength = (float)context.duration;
-                    throwStrength = Mathf.Clamp(throwStrength, 0.5f, 1f);
-                    myState = WeaponState.Thrown;
-                    myRigidbody.isKinematic = false;
-
-                    startThrowPosition = parentTransform.position;
-                    throwDirection = GetComponentInParent<Player>().transform.forward;
-
-                    myRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
-                    myRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
-                    myRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
-
-                    transform.parent = null;
-                    myRigidbody.AddForce(throwForce * throwDirection * throwStrength, ForceMode.VelocityChange);
-
-                    Debug.Log(myRigidbody.velocity);
-                    transform.forward = myRigidbody.velocity.normalized;
-                }
-            }*/
         }
         if (myState == WeaponState.Lost) //this doesn't work - holding throw button when weap is lost pulls it back
         {
             if (context.interaction is HoldInteraction && context.performed)
             {
-                Debug.Log("Weapon is lost, pulling it back");
                 myState = WeaponState.ComingBack;
-            }
-            
+            }            
         }
         else if ( myState == WeaponState.ComingBack)
-        {
+        {            
             if(context.interaction is HoldInteraction && context.canceled)
             {
-                Debug.Log("Weapon pullback canceled");
                 myState = WeaponState.Lost;
             }
         }
     }
 
-    private void PickUpWeapon()
+    private void PickUpWeapon() //to pick up coming back / lost weapon
     {
+        CancelWeaponCharge();
+        parentTransform.GetComponent<MeleeAttack>().EnableAttack(true);
         IgnoreCollisionWithPlayers(false);
 
         transform.position = hand.position;
@@ -243,7 +210,7 @@ public class RangedAttack : MonoBehaviour
         wallsHit = 0;
     }
 
-    private void CheckForPlayer()
+    private void CheckForPlayer() 
     {
        if( Physics.CheckSphere(transform.position, checkRadius, LayerMask.GetMask("Player")) 
             && (myState == WeaponState.Lost || myState == WeaponState.ComingBack /*|| myState == WeaponState.Thrown*/)
@@ -271,7 +238,7 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision) //after a number of wall bounces lose the weapon so it doesn't bounce all over
     {
         if (collision.gameObject.tag == "Wall" && canBounceOffWall && (myState == WeaponState.Thrown || myState == WeaponState.Stalling))
         {
@@ -285,7 +252,7 @@ public class RangedAttack : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) //this makes it possible to deflect a thrown weapon
     {
         if (other.tag == "Weapon")
         {
@@ -296,13 +263,13 @@ public class RangedAttack : MonoBehaviour
         }
     }
 
-    private void LoseWeapon(Transform originOfHit)
+    private void LoseWeapon(Transform originOfHit) //if deflected or too many walls hit 
     {
         Vector3 deflectionVector = transform.position - originOfHit.position;
-        Debug.Log("Vector of deflection is: " + (transform.position - originOfHit.position));
+
         myRigidbody.AddRelativeForce(-transform.forward * 0.2f, ForceMode.VelocityChange);
         myRigidbody.AddForce( deflectionVector * throwForce * 0.2f, ForceMode.VelocityChange);
-        // myRigidbody.constraints = RigidbodyConstraints.None;
+
         myRigidbody.constraints = RigidbodyConstraints.FreezeRotationX;
         myRigidbody.constraints = RigidbodyConstraints.FreezeRotationZ;
         myRigidbody.constraints = RigidbodyConstraints.FreezePositionY;
@@ -337,6 +304,12 @@ public class RangedAttack : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         }
+    }
+
+    public void CancelWeaponCharge() //used on the dash event
+    {
+        canChargeUp = false;
+        parentTransform.GetComponent<Player>().ChangeIndicatorStatus(canChargeUp);
     }
 
 }
