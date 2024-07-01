@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour
         else DontDestroyOnLoad(gameObject);
     }*/
 
-    public void StartGame()
+    public void StartGame(int sceneNumber)
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(sceneNumber);
     }
 
     public void HideCanvas()

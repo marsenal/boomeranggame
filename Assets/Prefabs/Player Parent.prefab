@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 7603072393778256878}
   - component: {fileID: 8618024946241841904}
   - component: {fileID: 4005111067982908028}
+  - component: {fileID: 7019326434778952234}
   m_Layer: 7
   m_Name: Player Parent
   m_TagString: Player
@@ -134,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20357b36f9245ed40924f13871cd00e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
+  moveSpeed: 15
   jumpSpeed: 5
   lives: 1
   throwDirectionIndicator: {fileID: 428157295992608102}
@@ -346,6 +347,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7019326434778952234}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: isSwinging
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c771c3b3-d4d5-4ffa-9ae5-6c4d9f729b14
     m_ActionName: Player2/Fire[/Keyboard/x]
   - m_PersistentCalls:
@@ -436,47 +449,7 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0308638a-19bf-45b7-b358-a47d47cd968b
     m_ActionName: Player2/Shoot[/Keyboard/numpad5]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 69d9c9a6-e68b-4a1e-8183-456ece68a8c0
-    m_ActionName: UI1/Navigate[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b5ad5eff-8b59-40ab-8d68-e609bc390e35
-    m_ActionName: UI1/Submit[/Keyboard/enter]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3ace2ebb-9aae-4630-b5ff-036784054334
-    m_ActionName: UI1/Cancel[/Keyboard/escape]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8cd175e1-b6de-46fd-8e97-4e009c49fd3c
-    m_ActionName: UI1/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7cc3158e-9074-413c-a625-f706d9c56368
-    m_ActionName: UI1/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: b7bfcd1c-7cd5-4007-9c09-078eb0a20265
-    m_ActionName: UI1/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: df6e2607-660c-452d-9108-b60b875eca70
-    m_ActionName: UI1/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0dfdf82f-9acb-4add-9185-cddf368f2461
-    m_ActionName: UI1/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 53a38a5a-5dbd-4c65-8ab2-e21e5f48769e
-    m_ActionName: UI1/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 777ddf82-2c18-45a8-a93b-fa934e3ca597
-    m_ActionName: UI1/TrackedDeviceOrientation
-  m_NeverAutoSwitchControlSchemes: 0
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player0
   m_SplitScreenIndex: -1
@@ -531,6 +504,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 1
+--- !u!95 &7019326434778952234
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2822443952615650405}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 045bdf83d58b09046a47ebeea84fa6b5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3405334475987256415
 GameObject:
   m_ObjectHideFlags: 0

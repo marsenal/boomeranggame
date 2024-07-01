@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ModeSelector : MonoBehaviour
+public static class ModeSelector
 {
-    [SerializeField] int numberOfPlayers;
-    [SerializeField] PlayerInput playerInput;
+    [SerializeField] static int numberOfPlayers;
+    [SerializeField] static PlayerInput playerInput;
+    static string[] playerStrings;
 
-    public PlayerInput SpawnPlayers()
+    public static PlayerInput SpawnPlayers()
     {
         var instance = PlayerInput.Instantiate(playerInput.gameObject, controlScheme: "Keyboard&Mouse", pairWithDevices: new InputDevice[] { Keyboard.current, Mouse.current });
 
@@ -17,5 +18,10 @@ public class ModeSelector : MonoBehaviour
 
         Object.Destroy(playerInput.gameObject);
         return instance;
+    }
+
+    public static string ReturnControl(int playerNumber)
+    {
+        return playerStrings[playerNumber];
     }
 }

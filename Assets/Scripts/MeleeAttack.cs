@@ -8,6 +8,8 @@ public class MeleeAttack : MonoBehaviour
     [SerializeField] GameObject hitArea;
     [SerializeField] float attackCooldown;
     [SerializeField] Transform hitPosition;
+
+    Animator myAnimator;
     float timer;
     public bool canAttack;
     public bool isWeaponInHand;
@@ -15,6 +17,7 @@ public class MeleeAttack : MonoBehaviour
     private void Start()
     {
         isWeaponInHand = true;
+        myAnimator = GetComponent<Animator>();
     }
 
     void Update()
@@ -44,11 +47,13 @@ public class MeleeAttack : MonoBehaviour
         {
             Instantiate(hitArea, hitPosition, false); //another overload for the function - this way we instantiate it not in world space
             timer = attackCooldown;
+            GetComponentInChildren<Animator>().SetTrigger("isSwinging");
         }
     }
 
     public void EnableAttack(bool value)
     {
         isWeaponInHand = value;
+        myAnimator.enabled = value;
     }
 }

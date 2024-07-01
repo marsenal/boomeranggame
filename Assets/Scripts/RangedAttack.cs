@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.Interactions;
 public class RangedAttack : MonoBehaviour
 {
     Rigidbody myRigidbody;
+    CapsuleCollider myCollider;
     [SerializeField] float maxSpeed;
     [SerializeField] float throwForce;
     [SerializeField] float maxThrowDuration;
@@ -41,7 +42,7 @@ public class RangedAttack : MonoBehaviour
     [SerializeField] WeaponState myState;
     void Start()
     {
-        //Physics.IgnoreCollision(GetComponent<BoxCollider>(), parentTransform.GetComponent<CapsuleCollider>()); //is this needed here?
+        Physics.IgnoreCollision(GetComponent<BoxCollider>(), parentTransform.GetComponent<CapsuleCollider>()); //is this needed here?
 
         myRigidbody = GetComponent<Rigidbody>();
         myRigidbody.isKinematic = true;
@@ -195,7 +196,7 @@ public class RangedAttack : MonoBehaviour
         IgnoreCollisionWithPlayers(false);
 
         transform.position = hand.position;
-        transform.parent = parentTransform;
+        transform.parent = hand.transform;
 
         transform.forward = parentTransform.forward;
         

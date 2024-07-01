@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
+       // InputUser.PerformPairingWithDevice(InputSystem.GetDevice("Keyboard")); //assign the player to the keyboard - this makes it possible to play 2 players with the keyboard simultaniously
     }
     void Start()
     {
@@ -51,12 +51,19 @@ public class Player : MonoBehaviour
         PlayerInput playerInput = GetComponent<PlayerInput>();
         Debug.Log(playerInput.currentActionMap.name);
 
+        
+        //Debug.Log(playerInput.GetDevice<Keyboard>().ToString());
+
         myAnimator = GetComponentInChildren<Animator>();
         myrigidbody = GetComponent<Rigidbody>();
 
         gravity = new Vector3(1f, -9.81f, 1f);
         timer = dashTimer;
         timer = dashCooldown;
+
+        DontDestroyOnLoad(gameObject);
+
+        Debug.Log(gameObject.name + " has device paired: " + playerInput.user.pairedDevices);
     }
 
     void Update()
@@ -73,6 +80,7 @@ public class Player : MonoBehaviour
         {
             timer2 += Time.deltaTime;
         }
+
     }
 
 
@@ -88,7 +96,7 @@ public class Player : MonoBehaviour
             myAnimator.SetBool("isDashing", true);
             myAnimator.SetBool("isMoving", false);
         }
-        else if (!isThrowing)
+        else if (!isThrowing && moveInput != Vector3.zero)
         {
             myrigidbody.velocity = moveInput * moveSpeed;
             myAnimator.SetBool("isMoving", true);
@@ -104,6 +112,7 @@ public class Player : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = new Vector3 (context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
+        
                
         if (context.performed)
         {
